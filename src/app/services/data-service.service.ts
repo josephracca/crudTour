@@ -76,4 +76,26 @@ export class dataServiceService {
   public postFile(url: string, data: any, opt?: any): Observable<any> {
     return this.http.post<any>(this.url + url, data, { headers: { 'enctype': 'multipart/form-data' } });
   }
+
+  // This our delete Function.
+  // Every Delete thats gets called will use this function to call the api.
+  public delete(key: string): Observable<any> {
+
+    //We are returning the result that we get from the api.
+    // After the return we have our Method which is a DELETE.
+    // A DELETE has two parameters, The Full URl + Key as well as our options Which is our ContentType.
+    // EX URL:  https://csa2020studentapi.azurewebsites.net/ + userinfo/19;
+    return this.http.delete(this.url + key, httpOptions)
+      // THE PIPE LETS YOU COMBIME MULTIPLE FUNTIONS INTO ONE FUNCTION 
+      .pipe(
+
+        // Map is going through all items returned and stored in this.data variable.
+        map(res => this.data = res),
+
+        // ALLOW US TO TAP INTO THE OBSERVABLE TO BE ABLE CHECK FOR SUCCESS / FAILED ATTEMPT THEN DETERMINES HOW TO HANDLE IT. 
+        tap((res: any) => this.handleSuccess(res, null)),
+        catchError(err => this.handleError(err)),
+      );
+  }
+
 }
