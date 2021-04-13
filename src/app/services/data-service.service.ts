@@ -9,7 +9,10 @@ import { Router } from '@angular/router';
 //create http options
 //
 const httpOptions = {
-  headers: new HttpHeaders({ "Content-Type": "application/json" })
+  headers: new HttpHeaders({
+    "Content-Type": "application/json",
+    Authorization : "my-auth-token"
+  })
 }
 
 @Injectable({
@@ -29,6 +32,14 @@ export class dataServiceService {
 
   //takes in a key, router pair
   public get(key: string): Observable<any> {
+
+    let tokenInfo = "bearer " + localStorage.getItem("token");
+    //so we need to go through and target our http options and we need to specifically target our headers
+    httpOptions.headers = httpOptions.headers.set("Authorization", tokenInfo)
+    //so we know our auth is going to include our token info, which has bearer space and token
+    //so now we are able to use our get method
+
+
     //make sure to do the import statement
     return this.http.get(this.url + key, httpOptions)
       .pipe(map(res => this.data = res),

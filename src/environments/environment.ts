@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  api: "https://csa2020studentapi.azurewebsites.net/"
+  api: "https://backendjr.azurewebsites.net/"
 };
 
 /*

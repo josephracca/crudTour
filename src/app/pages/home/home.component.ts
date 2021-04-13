@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Iuser } from 'src/app/interfaces/iuser';
 import { AddService } from 'src/app/services/add/add.service';
 import { DeleteService } from 'src/app/services/delete/delete.service';
@@ -18,7 +19,7 @@ export class HomeComponent implements OnInit {
     id: 0,
     firstName: "Joseph",
     lastName: "Racca",
-    userName: "Joseph",
+    userName: "Angel",
     password: "password"
   }
 
@@ -36,7 +37,8 @@ export class HomeComponent implements OnInit {
     private lService: LoginService,
     private dService: DeleteService,
     private uService: UpdateService,
-    
+    private router: Router,
+
   ) { }
 
   ngOnInit(): void {
@@ -58,13 +60,17 @@ export class HomeComponent implements OnInit {
       (res: any) => {
         console.log(res);
       });
-   }
+  }
   login() {
     this.lService.login(this.StudentOBJ).then(
       (res: any) => {
+        localStorage.setItem("token", res.token);
+        //this sets the token to local storage...
+        //we can comment this since we know it's working
         console.log(res);
+        this.router.navigate(["loggedin"])
       });
-   }
+  }
 
   //UPDATE
   updateUser() {
@@ -73,7 +79,7 @@ export class HomeComponent implements OnInit {
         console.log(res)
       }
     )
-   }
+  }
 
   //DELETE
   deleteuser() {
